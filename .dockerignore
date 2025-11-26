@@ -1,5 +1,5 @@
 node_modules
 coverage/
 testing
-packagelock.json
+package-lock.json
 README.node_modules
