@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/bayu-devops/simple-apps.git'
+                git branch: 'dev', url: 'https://github.com/bayu-devops/simple-apps.git'
             }
         }
         stage('Build') {
