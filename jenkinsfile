@@ -1,0 +1,40 @@
+pipeline {
+    agent {label 'production'}
+    
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                git branch: 'dev', url: 'https://github.com/bayu-devops/simple-apps.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh '''cd apps
+                npm install'''
+            }
+        }
+        stage('Testing') {
+            steps {
+                sh '''cd apps
+                npm test
+                npm run test:coverage'''
+            }
+        }
+        stage('Code Review') {
+            steps {
+                sh '''sonar
+                -Dsonar.host.url=http://172.23.12.112:9000 \
+                -Dsonar.projectKey=simple-apps \
+                -Dsonar.token=sqb_f6ef637a0f3e5d46070e203ce613397ae7fbfe34'''
+            }
+        }
+        stage('Deploy compose') {
+            steps {
+                sh '''
+                docker compose build
+                docker compose up -d
+                '''
+            }
+        }
+    }
+}
